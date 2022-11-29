@@ -3,8 +3,10 @@ const gql = require('graphql-tag');
 const mongoose= require('mongoose');
 
 const Post = require('./merng/models/Post.js');
-const { MONGODB } = require('./config.js');
+const usersResolvers = require('../merng/user');
+const { MONGODB } = require('../merng/config');
 
+// input to tha resolver to return something to us (line 24)
 const typeDefs = gql`
     type Post{
         id: ID!
@@ -12,9 +14,27 @@ const typeDefs = gql`
         createdAt: String!
         username: String!
     }
+    type User{
+        id: ID!
+        email: String!
+        token: String!
+        username: String!
+        createdAt: String!
+    }
+    input RegisterInput {
+        username: String!
+        password: String!
+        confirmPassword: String!
+        email: String!
+    }
+    type Mutation {
+        register (registerInput: RegisterInput): User!
+        login(username: String!, password: String!): User!
+    }
     type Query{
         getPosts: [Post]
     }`;
+    
 const resolvers = {
     Query: {
         async getPosts() {
@@ -24,6 +44,9 @@ const resolvers = {
         } catch (err) {
             throw new Error(err);
         }}
+    },
+    Mutation: {
+    ...usersResolvers.Mutation
     }};
 const server = new ApolloServer({
     typeDefs,
