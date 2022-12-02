@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+// import { gql, us } from '@apollo/client';
 
 export const FETCH_POSTS_QUERY = gql`
   {
@@ -18,6 +19,30 @@ export const FETCH_POSTS_QUERY = gql`
     #     createdAt
     #     body
     #   }
+    }
+  }
+`;
+
+export const REGISTER_USER = gql`
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        username: $username
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      id
+      email
+      username
+      createdAt
+      token
     }
   }
 `;

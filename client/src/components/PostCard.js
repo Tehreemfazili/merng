@@ -36,12 +36,15 @@ function PostCard({
             <Button color="blue" basic>
               <Icon name="like" />
             </Button>
+            <Label basic color="blue" pointing="left">
+              3
+            </Label>
             <Button color="blue" basic style={{ marginLeft: 10 }}>
               <Icon name="comments" />
             </Button>
-            {/* <Label basic color="blue" pointing="left">
-              {commentCount}
-            </Label> */}
+            <Label basic color="blue" pointing="left">
+              0
+            </Label>
           </Button>
         {/* </MyPopup> */}
         {/* {user && user.username === username && <DeleteButton postId={id} />} */}
