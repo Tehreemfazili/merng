@@ -30,8 +30,8 @@ function Home() {
         {loading ? (
           <h1>Loading posts..</h1>
         ) : (
-        //   <Transition.Group>
-        //     {
+          <Transition.Group>
+             {
             data &&
               data.getPosts.map((post) => (
                 //if iterating through values it needs key
@@ -39,9 +39,9 @@ function Home() {
                   <PostCard post={post} />
                 </Grid.Column>
               ))
-        //     }
+            }
               
-        //   </Transition.Group>
+          </Transition.Group>
         )}
       </Grid.Row>
     </Grid>
