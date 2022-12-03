@@ -4,74 +4,59 @@ import { Button, Form } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 
-// import { AuthContext } from '../context/auth';
+import { AuthContext } from '../context/auth';
 // import { useForm } from '../util/hooks';
 import { REGISTER_USER } from '../util/graphql';
+import { useForm } from '../util/hooks';
 
 function Register(props) {
-//   const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
   let navigate = useNavigate();
 
-//   const { onChange, onSubmit, values } = useForm(registerUser, {
-//     username: '',
-//     email: '',
-//     password: '',
-//     confirmPassword: ''
-//   });
-
-const [values, setValues] = useState({
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: '',
     email: '',
     password: '',
     confirmPassword: ''
-})
-
-  const onChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value })
-  }
+  });
 
 
-  //const [mutateFunction, { data, loading, error }] = useMutation(INCREMENT_COUNTER);
-  const [addUser, {loading, error}] = useMutation(REGISTER_USER, {
-    //proxy rearly used, has some meta data
-    update(_, result){
-        console.log(result)
-        // props.history.push('/login'); //push to home page
-        //push didnt worked for me, gave error
+//created custom hook to be used in regoster and login both
+// const [values, setValues] = useState({
+//     username: '',
+//     email: '',
+//     password: '',
+//     confirmPassword: ''
+// })
+
+//   const onChange = (event) => {
+//     setValues({ ...values, [event.target.name]: event.target.value })
+//   }
+
+//   const onSubmit = (event) => {
+//     event.preventDefault();
+//     addUser()
+//   }
+
+ //const [mutateFunction, { data, loading, error }] = useMutation(INCREMENT_COUNTER);
+  const [addUser, { loading }] = useMutation(REGISTER_USER, {
+    update(_,{
+        data: { register: userData }
+      }
+    ) {
+      context.login(userData);
         navigate('/')
     },
-    onError:(err) => {
-        // setErrors(err.graphQLErrors[0].extensions.exception.errors)
-        //exception not working , removed exception
-        console.log(err)
+    onError(err) {
         setErrors(err.graphQLErrors[0].extensions.errors);
     },
-    variables : values
-  })
+    variables: values
+  });
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    addUser()
+  function registerUser() {
+    addUser();
   }
-
-//   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-//     update(_,{
-//         data: { register: userData }
-//       }
-//     ) {
-//       context.login(userData);
-//       props.history.push('/');
-//     },
-//     onError(err) {
-//       setErrors(err.graphQLErrors[0].extensions.exception.errors);
-//     },
-//     variables: values
-//   });
-
-//   function registerUser() {
-//     addUser();
-//   }
 
   return (
     <div className="form-container">

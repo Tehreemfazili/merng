@@ -6,8 +6,8 @@ import { Container } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
-// import { AuthProvider } from './context/auth';
-// import AuthRoute from './util/AuthRoute';
+import { AuthProvider } from './context/auth';
+import AuthRoute from './util/authRoute';
 
 import MenuBar from './components/MenuBar';
 import Home from './pages/Home';
@@ -19,18 +19,20 @@ function App() {
   return (
     //Used fragment as menu is not the part of route
     //</Route> is only ever to be used as the child of <Routes> element, never rendered directly.
-    <Fragment>
-         <Container> 
+    <AuthProvider>
+        <Fragment>
+            <Container> 
             <MenuBar />
             <BrowserRouter>
                 <Routes>
                     <Route exact path="/" element={ <Home/>}/>
-                    <Route exact path="/login" element={<Login/>}  />
-                    <Route exact path="/register" element={<Register/>} />
                 </Routes> 
+                <AuthRoute exact path="/login" element={<Login/>}  />
+                    <AuthRoute exact path="/register" element={<Register/>} />
             </BrowserRouter>
         </Container>
     </Fragment>
+    </AuthProvider>
        
     // </BrowserRouter>
        
